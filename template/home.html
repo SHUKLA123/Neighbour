@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block nav_content%}
+<li class="nav-item">
+
+  <a class="nav-link" href="/news/{{pincode}}"> News</a>
+</li>
+
+{% endblock %}
+{% block extra_head%}
+{% endblock%}
+{% block content %}<!---->
+  {% load crispy_forms_tags %}
+
+<!-- 1 .> user Informantions -->
+
+<div class="container">
+<div class="row featurette my-6 mt-10">
+  <div class="col-md-7 col-xs-12 col-sm-12">
+    <h2 class="featurette-heading">{{user}}</h2>
+    <ul class="list-group my-3">
+      <li class="list-group-item">Following : {{len1}}</li>      
+      <li class="list-group-item">Age : {{age}}</li>
+      <li class="list-group-item">D.O.B. : {{dob}}</li>
+      <li class="list-group-item">Address : {{real_add}}</li>
+    </ul>
+
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Update Profile</button>
+    <button type="button"  data-toggle="modal" data-target="#notification" class="btn btn-primary my-3">Notifications</button>
+  </div>
+  <div class="col-md-5 mx-auto my-auto col-xs-12 col-sm-12">
+    <img class = "img-fluid" height = 200px; width = 200px src="{{user.Profile.image.url}}">
+  </div>
+  </div>
+</div>
+
+
+<!-- 2 .> User Updations Form which is insertted in models of boostrap4  -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+          </button>
+          <form class="signup" enctype="multipart/form-data" id="signup_form" method="post">
+            <br>
+            <center><h1>Update Your Profile</h1></center>
+            {% csrf_token %}
+            {{u_form|crispy}}
+            {{p_form.image|as_crispy_field}}
+            <button class = "btn btn-primary" type="submit">Update &raquo;</button>
+          </form>
+       </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- 3.> Notifications and Post -->
+
+
+<hr class = "my-3 w-75">
+<center>
+<h2 class="heading my-3">Your Posts</h2><center>
+<div class="container my-5">
+  {% if l%}
+
+    {%for i in l %}
+    <div class="row">
+      <div class="card mb-3" style="width : 900px; height: 100%">
+        {% load cust_filters %}
+        {% with images=i.id|image_s %}
+        {% if images %}
+        {% for image in images %}        
+        <img src="{{image.file.url}}" class="card-img-top p-2" alt="...">
+        {% endfor %}
+        {% else %}
+        
+        {% endif %}
+        {% endwith %}
+        <div class="card-body">
+          <h5 class="card-title">{{i.title}}</h5>
+          <p class="card-text">{{i.description}}</p>
+          <button type="button" class="btn btn-primary" disabled>
+            <svg class="bi bi-heart-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+            </svg>
+            {% with total=i.users_like.all.count %}
+            Like <span class="badge badge-light">{{ total }}</span>
+            {% endwith %}
+            <span class="sr-only">unread messages</span>
+          </button>
+          <p class="card-text my-3"><small class="text-muted">{{i.created}} ago</small></p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+
+
+
+<!-- Notifications -->
+
+
+<div class="modal fade" id="notification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">All Notifications</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {% if actions%}
+                  {% for action in actions %}
+                    {% include "actions/action/detail.html" %}
+                  {% endfor %}
+              {% endif %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+{%endblock%}

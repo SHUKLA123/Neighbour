@@ -1,0 +1,102 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="customDiv mx-auto">
+      <form class="" action="/search/" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button">SEARCH</button>
+          </div>
+          <input type="text" name = "srh" class="form-control" placeholder="Username / Address (Pincode) " aria-label="Not Found" aria-describedby="basic-addon1">
+        </div>
+      </form>
+    </div>
+  </div>
+
+        <!-- Showing Result -->
+  <div class = "row my-5">
+    {% if messages %}
+        {% for k in messages %}
+        <div class="card w-50 h-50 mx-auto">
+          <div class="card-body">
+            <div class="alert alert-success" role="alert">
+              Not Available !!!!
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    {%endif%}
+  </div>
+  {% if b %}
+  <div class="row my-5">
+    <div class="card w-50 h-50 my-auto mx-auto">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="row">
+            
+            <div class="col-lg-4 mx-auto">
+              <img src="{{b}}" style = "height:70px; width:75px;" class="rounded-circle">
+            </div>
+
+            {% if sr%}
+            <div class="col-lg-4 my-auto mx-auto">
+              <p class="lead text-dark" style="font-family: 'Open Sans', sans-serif;"><b>{{sr}}</b></p>
+            </div>
+            <div class="col-lg-4 my-auto mx-auto">
+              <a href="/user/{{sr}}"><button class="btn btn-info">Details</button></a>
+            </div>
+            {% else %}
+            <div class="alert alert-danger mx-auto" role="alert">
+              Not Found Any Person !!!!!
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+ 
+<!-- Searching result according to the address -->
+  {% if l %}
+  {% if s %}
+  {% if k %}
+  {% for i in l%}
+  <div class="row my-5">
+    <div class="card w-50 h-50 my-auto mx-auto">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="row my-3">
+            <div class="col-lg-4 mx-auto">
+              <img src="{{k}}" style = "height:70px; width:75px;" class="rounded-circle">
+            </div>
+            <div class="col-lg-4 my-auto mx-auto">
+              <p class="lead text-dark"><b>{{i}}</b></p>
+            </div>
+            <div class="col-lg-4 my-auto mx-auto">
+              <a href="/user/{{i}}"><button class="btn btn-info">Details</button></a>
+            </div>
+<!--             <div class="alert alert-danger mx-auto" role="alert">
+              Not Found Any Person !!!!!
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endif %}
+  {% endif %}
+
+        
+      
+  </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

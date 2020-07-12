@@ -1,0 +1,100 @@
+<!-- new base file  -->
+
+{% load staticfiles %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+
+  </head>
+  <body class="bg-muted">
+    <div class="container">
+
+      <!-- user auth.. -->
+      {% if user.is_authenticated %}
+      <header class="blog-header">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+          <div class=" col-xs-4  pt-1 pl-1 ">
+            <a class="text-muted my-2" style="font-family: 'Open Sans', sans-serif;" href="{% url 'home' %}"><button type="button" class="btn btn-warning">Home</button></a>
+          </div>
+          <div class="col-xs-4">
+            <a class="blog-header-logo text-dark font-weight-bold font-italic" style="font-size: 2rem; font-family: 'Bangers', cursive;
+            " href="#">RoजगाR </a>
+          </div>
+          <div class=" col-xs-4 d-flex justify-content-end align-items-end">
+            <a class="text-muted" href="{% url 'search' %}" aria-label="Search">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24" focusable="false"><title>Next Door Neibour</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
+            </a>
+            
+          </div>
+        </div>
+
+
+
+
+      </header>
+      <hr>
+      <div class="nav-scroller py-1 mb-2 shadow mb-5 bg-white rounded p-2">
+          <nav class="nav-float d-flex justify-content-between">
+            <a class="p-1 text-dark" style="font-family: 'Open Sans', sans-serif;" href="{% url 'buss' %}">
+              
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-person-badge text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M12 1H4a1 1 0 0 0-1 1v11.755S4 12 8 12s5 1.755 5 1.755V2a1 1 0 0 0-1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+              <path fill-rule="evenodd" d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+            Profile
+            </a>
+            <a class="p-1 text-dark" style="font-family: 'Open Sans', sans-serif;" href="{% url 'buss_name' %}"><title>Want to add new adda</title>New shop</a>
+            <a class="p-1 text-dark" style="font-family: 'Open Sans', sans-serif;" href="{% url 'nearby' %}">
+
+              <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-shop-window text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3.12 1.175A.5.5 0 0 1 3.5 1h9a.5.5 0 0 1 .38.175l2.759 3.219A1.5 1.5 0 0 1 16 5.37v.13h-1v-.13a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.13H0v-.13a1.5 1.5 0 0 1 .361-.976l2.76-3.22z"/>
+                <path d="M2.375 6.875c.76 0 1.375-.616 1.375-1.375h1a1.375 1.375 0 0 0 2.75 0h1a1.375 1.375 0 0 0 2.75 0h1a1.375 1.375 0 1 0 2.75 0h1a2.375 2.375 0 0 1-4.25 1.458 2.371 2.371 0 0 1-1.875.917A2.37 2.37 0 0 1 8 6.958a2.37 2.37 0 0 1-1.875.917 2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.5h1c0 .76.616 1.375 1.375 1.375z"/>
+                <path d="M4.75 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm3.75 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm3.75 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM2 8.854V15h12V8.854a3.354 3.354 0 0 0 1-.27V15h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V8.583c.311.14.647.232 1 .271zm0-1.008V7H1v.437c.291.207.632.35 1 .409zm13-.409c-.291.207-.632.35-1 .409V7h1v.437z"/>
+                <path d="M4 13V9H3v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9h-1v4H4z"/>
+              </svg> Shops
+            </a>
+            <a class="p-1 text-dark" style = "font-family: 'Open Sans', sans-serif;" href="{% url 'logout' %}">Logout</a>
+
+          </nav>
+      </div>
+      {%else%}
+      <header class="blog-header py-3 shadow p-3 mb-5 bg-white rounded">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+          <div class="col-4 pt-1">
+          
+          </div>
+          <div class="col-4">
+            <a class="blog-header-logo text-dark font-weight-bold font-italic" href="#">Neighbourhood</a>
+          </div>
+            <div class="col-4">
+              
+            </div>
+          </div>
+        </div>
+      </header>
+    
+       {% endif %}
+    </div>
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    {% block content%}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+    </body>
+  </html>
+
+
+

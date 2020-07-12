@@ -1,0 +1,211 @@
+{% extends "base.html"%}
+{% block content%}
+{%if user%}
+{%if users%}
+{%if imag%}
+{%if add%}
+{%if gender_real%}
+<div class="container">
+<div class="row featurette my-6 mt-10">
+  <div class="col-md-7 col-xs-12 col-sm-12">
+    <h2 class="featurette-heading">{{user}}</h2>
+    <ul class="list-group my-3">     
+      <li class="list-group-item">Age : {{age}}</li>
+      <li class="list-group-item">D.O.B. : {{dob}}</li>
+      <li class="list-group-item">Gender : {{gender_real}}</li>
+      <li class="list-group-item">Address : {{add}}</li>
+      <li class="list-group-item">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#following" data-whatever="@fat">
+            {% if len1 != 0 %}
+              <span class="badge badge-light">{{len1}}
+                  {% else %} 0 {% endif%}
+              </span>
+            Following
+        </button> 
+        <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#follower" data-whatever="@fat">
+            {% if len2 != 0 %}
+              <span class="badge badge-light">{{len2}}
+                  {% else %} 0 {% endif %}
+              </span>
+            Followers
+        </button>
+      </li>
+
+
+
+      <li class="list-group-item">
+        Follow/Unfollow : 
+        {% with total_followers=user.user_followers.count %}
+        {% if request.user != user%}
+        <button type="button" class="btn btn-primary">
+            <span class="count badge badge-light">
+              <span class="total">{{ total_followers }}</span>
+              follower{{ total_followers|pluralize }}
+            </span>
+            <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.user_followers.all %}un{% endif %}follow" class="follow button text-white">
+              {% if request.user not in user.user_followers.all %}
+                Follow
+              {% else %}
+                Unfollow
+              {% endif %}
+            </a>
+        </button>
+        {% else %}
+        <p class="lead"> You can't follow yourself !!!</p>
+        {% endif %}
+        {% endwith %}
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-5 mx-auto my-auto col-xs-12 col-sm-12">
+    <img class = "img-fluid" height = 300px; width = 250px src="{{imag}}">
+  </div>
+  </div>
+</div>
+{%endif%}
+{%endif%}
+{%endif%}
+{%endif%}
+{%endif%}
+
+
+<!-- Model for the followings -->
+
+
+<div class="modal fade modal-dialog modal-dialog-scrollable" id="following" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="exampleModalLabel">
+          Following <span class="text-muted badge badge-light">{% if len1 != 0%}{{len1}}{%else%}0{%endif%}</span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container marketing"> 
+            <!-- Three columns of text below the carousel -->
+            <div class="row my-3 text-center">
+            {% if q %}
+            {% for key, value in q.items%}
+              <div class="col-12 ">
+                <img src="{{value}}" alt = " " class = "bd-placeholder-img rounded-circle" height = 140 width="140">
+                <h2>{{ key }}</h2>
+                <p></p>
+                <p><a class="btn btn-secondary" href="/user/{{key}}" role="button">View details »</a></p>
+              </div><!-- /.col-lg-4 -->
+              {% endfor %}
+            
+            {% endif %}
+
+            </div><!-- /.row -->
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Model for Followers -->
+
+<div class="modal fade modal-dialog modal-dialog-scrollable" id="follower" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="exampleModalLabel">
+          Followers <span class="text-muted badge badge-light">{% if len2 != 0%}{{len2}}{%else%}0{%endif%}</span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+  
+
+
+          <div class="container marketing"> 
+      <!-- Three columns of text below the carousel -->
+      <hr class="w-25">
+      <div class="row my-3 text-center">
+       
+      {% if e %}
+      {% for key, value in e.items%}
+        <div class="col-lg-12 ">
+          <img src="{{value}}" alt = " " class = "bd-placeholder-img rounded-circle" height = 140 width="140">
+          <h2>{{ key }}</h2>
+          <p></p>
+          <p><a class="btn btn-secondary" href="/user/{{key}}" role="button">View details »</a></p>
+        </div><!-- /.col-lg-4 -->
+        {% endfor %}
+      {% else %}
+      <p>No one is follow you.</p>
+      <a href="{% url 'search' %}"><button type="search" name="button">Click Me</button></a>
+      {% endif %}
+
+      </div><!-- /.row -->
+
+
+
+    </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Ajax for follow and unfollow -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src=" http://cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js "></script>
+<script>
+var csrftoken = $.cookie('csrftoken');
+      function csrfSafeMethod(method) {
+          // these HTTP methods do not require CSRF protection
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          }
+      });
+      $(document).ready(function(){
+        $('a.follow').click(function(e){
+      e.preventDefault();
+      $.post('{% url "user_follow" %}',
+          {
+              id: $(this).data('id'),
+              action: $(this).data('action')
+          },
+          function(data){
+              if (data['status'] == 'ok')
+              {
+                  var previous_action = $('a.follow').data('action');
+
+                  // toggle data-action
+                  $('a.follow').data('action', previous_action == 'follow' ? 'unfollow' : 'follow');
+                  // toggle link text
+                  $('a.follow').text(previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+                  // update total followers
+                  var previous_followers = parseInt($('span.count .total').text());
+                  $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+              }
+      });
+  });
+  });
+ </script>
+
+
+{% endblock %}

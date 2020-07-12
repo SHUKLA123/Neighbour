@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+  <style>
+    img{
+      max-height:600px;
+      max-width:600px;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+{% load cust_filters%}
+{% load crispy_forms_tags %}
+<div class="container">
+  <form method="post form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-6 mb-0 col-sm-12">
+        {{ form.title|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-6 mb-0 col-sm-12">
+        {{ form.file|as_crispy_field }}
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      {{ form.description|as_crispy_field }}
+    </div>
+    <button type="submit" class="btn btn-info">Upload</button>
+  </form>
+</div>
+
+
+
+<!-- View of all Events  -->
+
+
+
+<div class="container" style="width: 80%">
+{% with events=request.user|event %}
+{% for event in events %}
+  <div class="row p-1">
+    <div class="card my-3 mx-2 pt-3 shadow mb-5 bg-white rounded">
+      <p class="lead p-0 m-0 b-0 pl-2">
+        <img src="{{event.user.Profile.image.url}}" class="rounded-circle p-1" style="height: 55px; width: 55px;"><span class="mx-2"><b>{{event.user}}</b></span>
+      </p>
+      
+      <hr>
+      <img src="{{event.file.url}}" class = "card-img-top rounded-5" alt="">
+      <hr class="w-75">
+      <div class="card-body text-center">
+        <div class="card-title">
+          <p class="lead"><i>{{event.description}}</i></p>
+          <p class="lead" style="font-size: 0.7rem;">{{event.created}}</p>
+        </div>
+          <!-- <p>{{i.title}}</p> -->
+          <div class="mx-auto my-auto p-2">
+            <button class= "btn btn-warning p-1 ">
+              {% with total_likes=event.users_like.count users_like=event.users_like.all%}
+              <span class="count badge badge-light" id = "count{{event.id}}">
+                <span class = "total" id = "total{{event.id}}">{{ total_likes }} </span>
+                 like{{ total_likes|pluralize }}
+              </span>
+              <a href="{%url 'eventlike' %}" style = "color : red" data-id="{{ event.id }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="eventlike text-dark" id="{{event.id}}">
+                {% if request.user not in users_like %}
+                  Like
+                {% else %}
+                  Unlike
+                {% endif %}
+              </a>
+            </button>
+            {% endwith %}
+          </div>
+      </div>
+    </div>  
+  </div>  
+  {% endfor%}
+  {% endwith %}
+
+</div>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+    var csrftoken = $.cookie('csrftoken');
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return(/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+    $(document).ready(function(){
+      $('a.eventlike').click(function(e){
+        var app = $(this).data("action")
+        var app_id = $(this).data("id")
+        console.log(app);
+       e.preventDefault();
+       $.post('{% url "eventlike" %}',
+           {
+               id: $(this).data('id'),
+               action: $(this).data('action')
+
+           },
+
+           function(data){
+
+               if (data['status'] == 'ok')
+               {
+
+                   var previous_action = app;
+                   var ni = app_id
+                   // toggle data-action
+                   $('a#'+ni).data('action', previous_action == 'like' ? 'unlike' : 'like');
+                   // toggle link text
+                   $('a#'+ni).text(previous_action == 'like' ? 'Unlike' : 'Like');
+
+                   // update total likes
+                   var previous_likes = parseInt($('span#count' + ni +' #total'+ni).text());
+
+                   $('span#count' + ni +' #total'+ni).text(previous_action == 'like' ? parseInt(previous_likes + 1) : parseInt(previous_likes - 1));
+               }
+
+       });
+
+   });});
+</script>
+{% endblock %}

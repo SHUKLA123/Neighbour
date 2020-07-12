@@ -1,0 +1,138 @@
+{% extends "base2.html"%}
+{% block extra_head%}
+<style media="screen">
+  body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 400px;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #2980b9;
+  color: white;
+  transform: rotateY(180deg);
+}
+</style>
+{% endblock %}
+{% block content%}
+
+<div class="container">
+  <div class="row my-5">
+    <div class="customDiv my-auto mx-auto">
+      
+      <form class="form" action="/nearby/" method="post">
+        {% csrf_token %}
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
+          <input type="text" name = "srh" class="form-control" placeholder="Enter the work / professtion" aria-label="Not Found" aria-describedby="basic-addon1">
+          </div>
+      </form>
+    </div>
+  </div>
+  <!-- Showing Result -->
+  <div class = "row">
+    {% if messages %}
+    <ul class="messages">
+      {% for k in messages %}
+        <li style="color : 'red'">{{k}}</li>
+      {% endfor %}
+    </ul>
+    {%endif%}
+  </div>
+  <div class="row mx-auto my-auto">    
+    {% if f %}
+    {% for k,l in f.items%}
+
+    <div class="col-sm-12 col-lg-6 my-4">
+      <a href="/user/{{k.user.id}}">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+
+            <div class="flip-card-front">
+              <img src="{{k.photo.url}}" alt="Avatar" style="width:300px;height:400px;">
+            </div>
+            <div class="flip-card-back">
+              <p>In Area</p>
+              <hr>
+              <h4>{{k.user}}</h4>
+              <p>{{k.bussiness_name}}</p>
+              <p>{{k.description}}</p>
+              <p>{{k.street}}</p>
+              <p>{{k.district}}</p>
+              <p>{{k.phone}}</p>
+              <p>{{k.website}}</p>
+              <button type="" name="button" class="btn btn-dark text-white">request</button>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    {% endif %}
+
+    {% if m %}
+    {% for i,j in m.items%}
+    <div class="col-sm-12 col-lg-6 my-4">
+
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="{{i.photo.url}}" alt="Avatar" style="width:300px;height:400px;">
+          </div>
+          <div class="flip-card-back">
+            <p>Out Area</p>
+            <hr>
+            <h4>{{i.user}}</h4>
+            <p>{{i.bussiness_name}}</p>
+            <p>{{i.description}}</p>
+            <p>{{i.street}}</p>
+            <p>{{i.district}}</p>
+            <p>{{i.phone}}</p>
+            <p>{{i.website}}</p>
+            <a href="/user/{{i.user.id}}">
+            <button type="" name="button" class="btn btn-dark text-white">request</button></a>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    {% endfor %}
+   {% endif %}
+  </div>
+</div>
+
+{% endblock %}

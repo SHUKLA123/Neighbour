@@ -1,0 +1,164 @@
+{% extends "account/base.html" %}
+{% block extra_head%}
+{% endblock%}
+{% block content %}
+<!---->
+
+<!-- Following -->
+<div class="container marketing">	
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+    	<div class="col-4">
+    	    		
+    	</div>
+     	<div class="col-4">
+    	<h4 class = "h4 text-center" style="font-family: 'Open Sans', sans-serif;"> Following <span class="text-muted badge badge-light">{% if len1 != 0%}{{len1}}{%else%}0{%endif%}</span></h4>    		
+    	</div>
+    	<div class="col-4">
+    	
+    	</div>
+
+    </div>
+    <hr class="w-25">
+    <div class="row my-3 text-center">
+     
+	  {% if q %}
+	  {% for key, value in q.items%}
+      <div class="col-lg-4 ">
+        <img src="{{value}}" alt = " " class = "bd-placeholder-img rounded-circle" height = 140 width="140">
+        <h5 class="" style="font-family: 'Open Sans', sans-serif;">{{ key }}</h5>
+        <p></p>
+        <p><a class="btn btn-secondary" href="/user/{{key}}" role="button">View details »</a></p>
+      </div><!-- /.col-lg-4 -->
+      {% endfor %}
+	  {% else %}
+	  <p>No one is following you. Want to follow</p>
+	  <a href="{% url 'search' %}"><button type="search" name="button">Click Me</button></a>
+	  {% endif %}
+
+    </div><!-- /.row -->
+
+  </div>
+
+<!-- Followers -->
+
+
+{% comment %}
+<!-- <hr class="w-25">
+<h2>Number of followers</h2>
+{% if len2 %}
+<p>{{len2}}</p>
+{% else %}
+<p>No one is following you </p>
+{% endif %}
+<h1>Hello my friend</h1>
+{% if e %}
+{% for key, value in e.items%}
+    <p><a href="/user/{{key}}" style = "color : blue">{{ key }}</a></p>
+    <img src="{{value}}" alt="">
+{% endfor %}
+{% else %}
+<p>No one is following you </p>
+{% endif %}
+{%endblock%} -->
+{% endcomment %}
+
+
+<div class="container marketing">	
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+    	<div class="col-4">
+    	    		
+    	</div>
+     	<div class="col-4">
+    	<h4 class = "h4 text-center" style="font-family: 'Open Sans', sans-serif;"> Following <span class="text-muted badge badge-light">{% if len2 != 0%}{{len2}}{%else%}0{%endif%}</span></h4>    		
+    	</div>
+    	<div class="col-4">
+    	
+    	</div>
+
+    </div>
+    <hr class="w-25">
+    <div class="row my-3 text-center">
+     
+	  {% if e %}
+	  {% for key, value in e.items%}
+      <div class="col-lg-4 ">
+        <img src="{{value}}" alt = " " class = "bd-placeholder-img rounded-circle" height = 140 width="140">
+        <h5 class="" style="font-family: 'Open Sans', sans-serif;">{{ key }}</h5>
+        <p></p>
+        <p><a class="btn btn-secondary" href="/user/{{key}}" role="button">View details »</a></p>
+      </div><!-- /.col-lg-4 -->
+      {% endfor %}
+	  {% else %}
+	  <p>No one is follow you.</p>
+	  <a href="{% url 'search' %}"><button type="search" name="button">Click Me</button></a>
+	  {% endif %}
+
+    </div><!-- /.row -->
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% comment %}
+{% if len1 != 0 %}
+<h2>Number of following</h2>
+<p>{{len1}}</p>
+{% else %}
+{% endif %}
+<h1>Hello my friend</h1>
+{% if q %}
+{% for key, value in q.items%}
+    <dt>{{ key }}</dt>
+    <img src="{{value}}" alt="">
+{% endfor %}
+{% else %}
+<p>No one is following you. Want to follow</p>
+<a href="{% url 'search' %}"><button type="search" name="button">Click Me</button></a>
+{% endif %}
+
+{% endcomment %}
+ -->
+{% comment %}
+<!-- <hr class="w-25">
+<h2>Number of followers</h2>
+{% if len2 %}
+<p>{{len2}}</p>
+{% else %}
+<p>No one is following you </p>
+{% endif %}
+<h1>Hello my friend</h1>
+{% if e %}
+{% for key, value in e.items%}
+    <p><a href="/user/{{key}}" style = "color : blue">{{ key }}</a></p>
+    <img src="{{value}}" alt="">
+{% endfor %}
+{% else %}
+<p>No one is following you </p>
+{% endif %}
+
+ -->
+ {% endcomment %}
+{%endblock%}
